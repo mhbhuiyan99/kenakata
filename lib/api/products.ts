@@ -8,6 +8,10 @@ function cleanImageUrl(url: string): string {
     return url.replace(/[\[\]\"]/g, "");
 }
 
+/* >>> Checking loading.tsx
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+*/
 export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
     try {
         const res = await fetch(endPoints.products.featured(limit, 0), {
@@ -18,7 +22,7 @@ export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
         const data = await res.json(); 
 
         if(!Array.isArray(data)) return [];
-
+        //await delay(3000);
         return data.map((item: any) => ({
             id: item.id,
             title: item.title || "Untitled Product",
@@ -37,4 +41,15 @@ export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
         console.error("Error fetching featured products:", error);
         return [];
     }
+}
+
+export async function getProductDetail(id: string): Promise<any> {
+  try {
+    const res = await fetch(endPoints.products.detail(Number(id)));
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
