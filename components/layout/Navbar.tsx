@@ -5,25 +5,25 @@ import { Search, ShoppingCart, Menu, X, CircleUserRound } from "lucide-react";
 
 export default function Navbar() {
   return (
-    // 1. The Dark Green Background Wrapper
-    <header className="bg-gray-200 p-4">
-      {/* 2. The White "Pill" Container */}
-      <nav className="container mx-auto bg-teal-900 rounded-2xl px-6 py-2 flex items-center justify-between shadow-md">
+    <header className="bg-gray-200 px-4 sm:px-6 lg:px-16 pt-4">
+      
+      <nav className="max-w-7xl mx-auto bg-teal-900 rounded-2xl px-6 py-2 flex items-center justify-between shadow-md">
+        
         {/* Left Side: Menu + Logo */}
         <div className="flex items-center gap-4">
-          <button className="text-white outline-none ">
+          <button className="text-white outline-none cursor-pointer">
             <Menu size={30} />
           </button>
 
           <Link
             href="/"
-            className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-md shadow-sm hover:shadow-md transition-shadow"
+            className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-xl shadow-sm hover:shadow-md transition-shadow"
           >
             {/* The Icon */}
             <div className="flex items-center justify-center">
               <ShoppingCart
                 size={22}
-                className="text-orange-500"
+                className="text-orange-600"
                 strokeWidth={2.5}
               />
             </div>
@@ -49,10 +49,10 @@ export default function Navbar() {
         {/* Right Side: Cart + Profile */}
         <div className="flex items-center gap-3">
           <motion.div
-            whileHover={{ scale: 1.15 }} // Pops up by 15%
-            whileTap={{ scale: 0.95 }} // Shrinks slightly when clicked
+            whileHover={{ scale: 1.15 }} 
+            whileTap={{ scale: 0.95 }} 
           >
-            <div className="relative p-2 bg-white rounded-full">
+            <div className="relative p-2 bg-white rounded-full cursor-pointer">
               <ShoppingCart size={20} className="text-gray-700" />
               <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
                 0
