@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Open_Sans } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/layout/Navbar";
@@ -9,9 +9,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+
+const openSans = Open_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-open-sans",  
 });
 
 export const metadata: Metadata = {
@@ -27,11 +29,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${openSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Navbar />
-        {children}
+        <main>
+            {children}
+          </main>
         </body>
     </html>
   );
