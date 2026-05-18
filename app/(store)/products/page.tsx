@@ -6,7 +6,7 @@ export default async function ProductsPage() {
   const products = await getFeaturedProducts(20);
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-16">
+    <main className="min-h-screen bg-gray-200 pb-16">
       <section className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-16">
         
         {/* Catalog Title */}

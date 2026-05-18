@@ -1,4 +1,3 @@
-// components/home/CategoriesGrid.tsx
 import Link from "next/link";
 import Image from "next/image";
 import { getCategories } from "@/lib/api/categories";
@@ -23,7 +22,7 @@ export default async function CategoriesGrid() {
         {categories.map((category) => (
           <Link
             key={category.id}
-            href={`/category/${category.id}`}
+            href={`/categories/${category.id}`}
             className="min-w-[170px] sm:min-w-[200px] md:min-w-0 shrink-0 snap-start group block"
           >
             <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md border border-slate-100 transition-all duration-200 flex flex-col justify-between h-[120px] relative overflow-hidden">
