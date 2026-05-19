@@ -8,5 +8,8 @@ export const endPoints = {
     products: {
         featured: (limit: number, offset: number) => `${API}/api/v1/products?limit=${limit}&offset=${offset}`,
         detail: (id: number | string) => `${API}/api/v1/products/${id}`,
+    },
+    auth: {
+        login: `${API}/api/v1/auth/login`,
     }
 };
