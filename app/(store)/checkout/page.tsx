@@ -52,7 +52,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-200 pb-16 pt-8">
+    <main className="min-h-screen pb-16 pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-16">
 
         <AnimatePresence mode="wait">

@@ -13,7 +13,7 @@ export default async function FeaturedProducts() {
       {/* Section Header Grid */}
       <div className="flex items-center justify-between mb-8">
         <div className="text-left">
-          <h2 className="text-mono text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-mono text-2xl md:text-3xl font-extrabold tracking-tight">
             Featured Products
           </h2>
           <p className="text-sm text-slate-500 mt-1">

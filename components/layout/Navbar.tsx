@@ -2,16 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Menu, CircleUserRound, LogIn, LogOut, UserPlus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import SearchBar from "./SearchBar";
-import { useAuth } from "@/context/AuthContext"; 
+import { useAuth } from "@/context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const router = useRouter();
-  const { cartCount } = useCart(); 
+  const { cartCount } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,16 +30,15 @@ export default function Navbar() {
   }, []);
 
   const handleLogoutClick = () => {
-    logout(); 
+    logout();
     setIsOpen(false);
     router.push("/");
     router.refresh();
   };
 
   return (
-    <header className="bg-gray-200 px-4 sm:px-6 lg:px-16 pt-4 relative z-50">
-      <nav className="max-w-7xl mx-auto bg-teal-900 rounded-2xl px-6 py-2 flex items-center justify-between shadow-md">
-        
+    <header className="bg-background px-4 sm:px-6 lg:px-16 pt-4 relative z-50 transition-colors duration-200">
+      <nav className="max-w-7xl mx-auto bg-nav-bg rounded-2xl px-6 py-2 flex items-center justify-between shadow-md transition-colors duration-200">
         {/* Left Side Layout */}
         <div className="flex items-center gap-4">
           <button className="text-white outline-none cursor-pointer">
@@ -61,6 +61,7 @@ export default function Navbar() {
 
         {/* Right Side Layout */}
         <div className="flex items-center gap-3 relative" ref={dropdownRef}>
+          <ThemeToggle />
           <Link href="/cart">
             <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.95 }}>
               <div className="relative p-2 bg-white rounded-full cursor-pointer">
@@ -78,9 +79,9 @@ export default function Navbar() {
               <button className="w-9 h-9 rounded-full overflow-hidden border-2 border-white flex items-center justify-center bg-white cursor-pointer focus:outline-none">
                 {/* Dynamic UI Enhancement: Show user's actual avatar image if logged in, else fallback to standard icon */}
                 {user?.avatar ? (
-                  <img 
-                    src={user.avatar} 
-                    alt={user.name} 
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -126,7 +127,7 @@ export default function Navbar() {
                         <p className="text-xs font-bold text-slate-800 truncate">{user.name}</p>
                         <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
                       </div>
-                      
+
                       <button
                         onClick={handleLogoutClick}
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50/60 transition-colors text-left cursor-pointer"

@@ -37,7 +37,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <main className="min-h-screen flex items-center justify-center p-4">
       <div className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-sm text-left space-y-6">
         
         <div className="space-y-1 text-center">

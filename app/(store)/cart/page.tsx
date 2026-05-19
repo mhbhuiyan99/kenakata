@@ -8,9 +8,9 @@ export default function CartPage() {
     const { cart, addToCart, decreaseQuantity, removeFromCart, cartTotal, clearCart } = useCart();
 
     return (
-        <main className="min-h-screen bg-slate-50 pb-24 pt-10">
+        <main className="min-h-screen pb-24 pt-10">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl font-black text-slate-900 tracking-tight mb-8">
+                <h1 className="text-3xl font-black tracking-tight mb-8">
                     Your Shopping Cart
                 </h1>
 

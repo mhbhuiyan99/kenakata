@@ -6,7 +6,7 @@ export default function StoreLayout({
   children: React.ReactNode 
 }) {
   return (
-      <div className="min-h-screen bg-gray-200">
+      <div className="min-h-screen">
         {children}
       </div>
   );

@@ -41,12 +41,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-gray-200 pb-16">
+    <main className="min-h-screen pb-16">
       <section className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-16">
         
         {/* Catalog Title Header Group */}
         <div className="text-left mb-8">
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-3xl font-extrabold tracking-tight">
             Our Full Catalog
           </h1>
           <p className="text-sm text-slate-500 mt-1">

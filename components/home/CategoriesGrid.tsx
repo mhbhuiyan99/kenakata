@@ -9,7 +9,7 @@ export default async function CategoriesGrid() {
     <section className="max-w-7xl mx-auto pt-10 pb-4 px-4 sm:px-6 lg:px-16">
       
       <div className="text-left mb-6">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
           Explore Categories
         </h2>
         <p className="text-sm text-slate-500 mt-1">

@@ -14,7 +14,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const categoryName = products[0]?.category?.name || "Category Collections";
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-16">
+    <main className="min-h-screen pb-16">
       <section className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-16">
         
         {/* Breadcrumb Info Strip */}
@@ -25,7 +25,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
         {/* Category Heading */}
         <div className="text-left mb-8">
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-3xl font-extrabold tracking-tight">
             {categoryName}
           </h1>
           <p className="text-sm text-slate-500 mt-1">
