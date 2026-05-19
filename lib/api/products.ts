@@ -60,6 +60,7 @@ interface FilterParams {
   price_min?: string;
   price_max?: string;
   categoryId?: string;
+  offset?: string;
 }
 
 export async function getProducts(filters?: FilterParams, limit = 20): Promise<Product[]> {
@@ -70,8 +71,9 @@ export async function getProducts(filters?: FilterParams, limit = 20): Promise<P
     if (filters?.price_min) query.append("price_min", filters.price_min);
     if (filters?.price_max) query.append("price_max", filters.price_max);
     if (filters?.categoryId) query.append("categoryId", filters.categoryId);
+    const currentOffset = filters?.offset ? Number(filters.offset) : 0;
 
-    const baseUrl = endPoints.products.featured(limit, 0);
+    const baseUrl = endPoints.products.featured(limit, currentOffset);
     const separator = baseUrl.includes("?") ? "&" : "?";
     const url = `${baseUrl}${separator}${query.toString()}`;
     
