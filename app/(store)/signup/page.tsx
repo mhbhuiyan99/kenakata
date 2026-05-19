@@ -2,44 +2,38 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/lib/api/auth";
-import { useAuth } from "@/context/AuthContext"; 
-import  Link  from "next/link";
+import Link from "next/link";
+import { signUpUser } from "@/lib/api/auth";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const router = useRouter();
-  const { login } = useAuth(); 
-  
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // 🚀 Strictly typed with React.FormEvent to keep build processes crisp and standard
-  const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const token = await loginUser({ email, password });
+    const isCreated = await signUpUser({ name, email, password });
 
-    if (!token) {
-      setError("Invalid email or password. Please try again.");
+    if (!isCreated) {
+      setError("Failed to create account. Email might already be taken.");
       setLoading(false);
       return;
     }
 
-    try {
-      // Pass token directly into AuthContext to update state instantly!
-      // This switches your active CartContext partitions dynamically.
-      await login(token); 
-
-      router.push("/products");
-      router.refresh(); // Clear Next.js caching layout parameters
-    } catch (err) {
-      setError("Failed to synchronize user profile session.");
-      setLoading(false);
-    }
+    setSuccess(true);
+    setLoading(false);
+    
+    // Redirect to login page after a brief moment
+    setTimeout(() => {
+      router.push("/login");
+    }, 2000);
   };
 
   return (
@@ -48,10 +42,10 @@ export default function LoginPage() {
         
         <div className="space-y-1 text-center">
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-            Welcome back to kenakata
+            Create an Account
           </h1>
           <p className="text-xs text-slate-400">
-            Log in to manage your orders and secure checkout profiles
+            Join kenakata to track your purchases and speed up checkout
           </p>
         </div>
 
@@ -61,7 +55,27 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        {success && (
+          <div className="bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold p-3 rounded-xl">
+            🎉 Account created successfully! Redirecting to login...
+          </div>
+        )}
+
+        <form onSubmit={handleSignUp} className="space-y-4">
+          <div>
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name" 
+              className="w-full text-sm text-gray-800 bg-gray-50 rounded-xl py-2.5 px-4 border border-slate-100 focus:outline-none focus:bg-white focus:border-slate-200"
+            />
+          </div>
+
           <div>
             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1">
               Email Address
@@ -71,7 +85,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email address"
+              placeholder="Your email address"
               className="w-full text-sm text-gray-800 bg-gray-50 rounded-xl py-2.5 px-4 border border-slate-100 focus:outline-none focus:bg-white focus:border-slate-200"
             />
           </div>
@@ -85,25 +99,25 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Your password"
+              placeholder="Add a password"
               className="w-full text-sm text-gray-800 bg-gray-50 rounded-xl py-2.5 px-4 border border-slate-100 focus:outline-none focus:bg-white focus:border-slate-200"
             />
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || success}
             className="w-full bg-teal-900 text-white font-bold py-3 px-4 rounded-xl text-center shadow-md hover:bg-[#b4f46c] hover:text-teal-950 transition-all text-sm cursor-pointer disabled:opacity-50"
           >
-            {loading ? "Verifying Account..." : "Log In"}
+            {loading ? "Registering account..." : "Sign Up"}
           </button>
         </form>
 
         <div className="text-center text-xs text-slate-400">
           <p>
-            Don't have an account?{" "}
-            <Link href="/signup" className="text-teal-800 font-bold hover:underline">
-              Sign Up
+            Already have an account?{" "}
+            <Link href="/login" className="text-teal-800 font-bold hover:underline">
+              Log In
             </Link>
           </p>
         </div>

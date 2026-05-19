@@ -1,19 +1,23 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; 
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Menu, CircleUserRound, LogIn, LogOut, User } from "lucide-react";
+import { ShoppingCart, Menu, CircleUserRound, LogIn, LogOut, UserPlus } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import SearchBar from "./SearchBar";
-import { useState, useEffect, useRef } from "react";
+import { useAuth } from "@/context/AuthContext"; 
 
 export default function Navbar() {
+  const router = useRouter();
   const { cartCount } = useCart(); 
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Close the dropdown cleanly if clicked outside of the menu container
+  //  Destructuring user profile and centralized logout from your new Auth context
+  const { user, logout } = useAuth();
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -24,28 +28,25 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleLogoutClick = () => {
+    logout(); 
+    setIsOpen(false);
+    router.push("/");
+    router.refresh();
+  };
+
   return (
     <header className="bg-gray-200 px-4 sm:px-6 lg:px-16 pt-4 relative z-50">
       <nav className="max-w-7xl mx-auto bg-teal-900 rounded-2xl px-6 py-2 flex items-center justify-between shadow-md">
         
-        {/* Left Side: Menu + Logo */}
+        {/* Left Side Layout */}
         <div className="flex items-center gap-4">
           <button className="text-white outline-none cursor-pointer">
             <Menu size={30} />
           </button>
 
-          <Link
-            href="/"
-            className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-center justify-center">
-              <ShoppingCart
-                size={22}
-                className="text-orange-600"
-                strokeWidth={2.5}
-              />
-            </div>
-
+          <Link href="/" className="flex items-center gap-2 bg-white px-4 py-1.5 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+            <ShoppingCart size={22} className="text-orange-600" strokeWidth={2.5} />
             <div className="flex items-center text-xl font-bold tracking-tight">
               <span className="text-[#e11d48]">kena</span>
               <span className="text-black">kata</span>
@@ -53,54 +54,41 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Center: Search Bar */}
+        {/* Center Layout */}
         <div className="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
           <SearchBar />
         </div>
 
-        {/* Right Side: Cart + Profile Dropdown Group */}
+        {/* Right Side Layout */}
         <div className="flex items-center gap-3 relative" ref={dropdownRef}>
-          
           <Link href="/cart">
-            <motion.div
-              whileHover={{ scale: 1.15 }} 
-              whileTap={{ scale: 0.95 }} 
-            >
+            <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.95 }}>
               <div className="relative p-2 bg-white rounded-full cursor-pointer">
                 <ShoppingCart size={20} className="text-gray-700" />
-                
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                    {cartCount}
-                  </span>
-                )}
-                
-                {cartCount === 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gray-400 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                    0
-                  </span>
-                )}
+                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                  {cartCount}
+                </span>
               </div>
             </motion.div>
           </Link>
 
-          {/* Profile Trigger Element */}
+          {/* User Icon Action Dropdown Trigger */}
           <div className="relative">
-            <motion.div 
-              whileHover={{ scale: 1.15 }} 
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              <button className="w-9 h-9 rounded-full overflow-hidden border-2 border-white flex items-center justify-center bg-white cursor-pointer transition-opacity focus:outline-none">
-                <CircleUserRound
-                  size={28}
-                  className="text-gray-700"
-                  strokeWidth={1.5}
-                />
+            <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.95 }} onClick={() => setIsOpen(!isOpen)}>
+              <button className="w-9 h-9 rounded-full overflow-hidden border-2 border-white flex items-center justify-center bg-white cursor-pointer focus:outline-none">
+                {/* Dynamic UI Enhancement: Show user's actual avatar image if logged in, else fallback to standard icon */}
+                {user?.avatar ? (
+                  <img 
+                    src={user.avatar} 
+                    alt={user.name} 
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <CircleUserRound size={28} className="text-gray-700" strokeWidth={1.5} />
+                )}
               </button>
             </motion.div>
 
-            {/*  Dynamic Dropdown Panel */}
             <AnimatePresence>
               {isOpen && (
                 <motion.div
@@ -110,35 +98,37 @@ export default function Navbar() {
                   transition={{ duration: 0.15 }}
                   className="absolute right-0 mt-3 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl py-2 px-1 text-left flex flex-col gap-0.5"
                 >
-                  {!isLoggedIn ? (
-                    // Show when Guest
-                    <Link
-                      href="/login"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-teal-900 transition-colors"
-                    >
-                      <LogIn size={16} strokeWidth={2.5} />
-                      Log In
-                    </Link>
-                  ) : (
-                    // Show when Logged In
+                  {/* SIMPLIFIED DYNAMIC RENDERING VIA AUTH CONTEXT STATUS */}
+                  {!user ? (
                     <>
+                      {/* Guest Options only */}
                       <Link
-                        href="/profile"
+                        href="/login"
                         onClick={() => setIsOpen(false)}
                         className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-teal-900 transition-colors"
                       >
-                        <User size={16} strokeWidth={2.5} />
-                        My Profile
+                        <LogIn size={16} strokeWidth={2.5} />
+                        Log In
                       </Link>
-                      
-                      <hr className="border-slate-100 my-1 mx-2" />
+                      <Link
+                        href="/signup"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 hover:text-teal-900 transition-colors"
+                      >
+                        <UserPlus size={16} strokeWidth={2.5} />
+                        Sign Up
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {/* Logged-In Options only */}
+                      <div className="px-4 py-2 border-b border-slate-50 text-left">
+                        <p className="text-xs font-bold text-slate-800 truncate">{user.name}</p>
+                        <p className="text-[10px] text-slate-400 truncate">{user.email}</p>
+                      </div>
                       
                       <button
-                        onClick={() => {
-                          setIsLoggedIn(false);
-                          setIsOpen(false);
-                        }}
+                        onClick={handleLogoutClick}
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50/60 transition-colors text-left cursor-pointer"
                       >
                         <LogOut size={16} strokeWidth={2.5} />
@@ -150,7 +140,6 @@ export default function Navbar() {
               )}
             </AnimatePresence>
           </div>
-
         </div>
       </nav>
     </header>
