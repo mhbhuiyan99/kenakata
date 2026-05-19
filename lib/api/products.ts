@@ -53,3 +53,50 @@ export async function getProductDetail(id: string): Promise<any> {
     return null;
   }
 }
+
+
+interface FilterParams {
+  title?: string;
+  price_min?: string;
+  price_max?: string;
+  categoryId?: string;
+}
+
+export async function getProducts(filters?: FilterParams, limit = 20): Promise<Product[]> {
+  try {
+    const query = new URLSearchParams();
+    
+    if (filters?.title) query.append("title", filters.title);
+    if (filters?.price_min) query.append("price_min", filters.price_min);
+    if (filters?.price_max) query.append("price_max", filters.price_max);
+    if (filters?.categoryId) query.append("categoryId", filters.categoryId);
+
+    const baseUrl = endPoints.products.featured(limit, 0);
+    const separator = baseUrl.includes("?") ? "&" : "?";
+    const url = `${baseUrl}${separator}${query.toString()}`;
+    
+    const res = await fetch(url, { next: { revalidate: 3600 } });
+    if (!res.ok) throw new Error("Failed to fetch filtered products");
+    
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+
+    return data.map((item: any) => ({
+      id: item.id,
+      title: item.title || "Untitled Product",
+      price: item.price || 0,
+      description: item.description || "",
+      images: Array.isArray(item.images) 
+              ? item.images.map(cleanImageUrl) 
+              : ["/placeholder-box.png"],
+      category: {
+        id: item.category?.id || 0,
+        name: item.category?.name || "Uncategorized",
+        image: cleanImageUrl(item.category?.image),
+      }
+    }));
+  } catch (error) {
+    console.error("Error fetching filtered products:", error);
+    return [];
+  }
+}

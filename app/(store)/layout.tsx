@@ -1,5 +1,4 @@
-import { CartProvider } from "@/context/CartContext";
-import Navbar from "@/components/layout/Navbar";
+
 
 export default function StoreLayout({ 
   children 
