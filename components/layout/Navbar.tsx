@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Search, ShoppingCart, Menu, CircleUserRound } from "lucide-react";
+import { ShoppingCart, Menu, CircleUserRound } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const { cartCount } = useCart(); 
@@ -38,12 +39,7 @@ export default function Navbar() {
 
         {/* Center: Search Bar */}
         <div className="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
-          <input
-            type="text"
-            placeholder="Search for Grocery, Stores..."
-            className="w-full text-gray-800 bg-gray-200 rounded-full py-2 px-10 text-sm focus:outline-none focus:ring-1 focus:ring-slate-100"
-          />
-          <Search size={16} className="absolute left-3 text-gray-400" />
+          <SearchBar />
         </div>
 
         {/* Right Side: Cart + Profile */}
