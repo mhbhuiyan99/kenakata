@@ -49,3 +49,24 @@ export async function signUpUser(credentials: SignUpCredentials): Promise<boolea
     return false;
   }
 }
+
+export function setSessionCookie(token: string, daysToLive: number = 7): void {
+  if (typeof window === "undefined") return;
+
+  const date = new Date();
+  //  Dynamically add days to the current live system time
+  date.setTime(date.getTime() + daysToLive * 24 * 60 * 60 * 1000);
+  const expires = date.toUTCString();
+
+  document.cookie = `kenakata_access_token=${token}; path=/; expires=${expires}; SameSite=Strict; Secure`;
+}
+
+
+export function clearSessionCookie(): void {
+  if (typeof window === "undefined") return;
+
+  //  Dynamic approach: Setting expires to the exact current moment instantly invalidates it
+  const expires = new Date(0).toUTCString(); 
+  
+  document.cookie = `kenakata_access_token=; path=/; expires=${expires}; SameSite=Strict; Secure`;
+}
