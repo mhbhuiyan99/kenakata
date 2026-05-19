@@ -131,9 +131,11 @@ export default function CartPage() {
                                 <span className="text-2xl font-black text-slate-900">${cartTotal}</span>
                             </div>
 
-                            <button className="w-full bg-[#b4f46c] hover:bg-[#a3e35b] text-teal-950 font-black py-3 px-4 rounded-xl text-center transition-colors shadow-sm text-sm">
-                                Proceed to Checkout
-                            </button>
+                            <Link href="/checkout" className="block w-full">
+                                <button className="w-full bg-[#b4f46c] hover:bg-[#a3e35b] text-teal-950 font-black py-3 px-4 rounded-xl text-center transition-colors shadow-sm text-sm cursor-pointer">
+                                    Proceed to Checkout
+                                </button>
+                            </Link>
                         </div>
 
                     </div>
