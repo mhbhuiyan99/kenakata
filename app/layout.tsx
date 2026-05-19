@@ -3,6 +3,7 @@ import { Geist, Open_Sans } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/layout/Navbar";
+import { CartProvider } from "@/context/CartContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,7 +14,7 @@ const geistSans = Geist({
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-open-sans",  
+  variable: "--font-open-sans",
 });
 
 export const metadata: Metadata = {
@@ -31,12 +32,17 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${openSans.variable} h-full antialiased`}
     >
+
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        <main>
+        <CartProvider>
+          <Navbar />
+
+          <main>
             {children}
           </main>
-        </body>
+        </CartProvider>
+      </body>
+
     </html>
   );
 }

@@ -2,6 +2,7 @@ import { getProductDetail } from "@/lib/api/products";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import AddToCartButton from "@/components/cart/AddToCartButton"; 
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -26,7 +27,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           <span className="text-slate-600 font-semibold">{product.title}</span>
         </div>
 
-        {/* Main Grid */}
+        {/* Main Grid Card frame */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
           
           {/* Left Side: Product Gallery Display Frame */}
@@ -42,7 +43,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
             />
           </div>
 
-          {/* Right Side: Product Meta Details Info Block */}
+          {/* Right Side: Product Details Info Block */}
           <div className="flex flex-col justify-between text-left py-2">
             <div className="space-y-4">
               <span className="inline-block bg-teal-50 text-teal-800 text-xs font-bold px-3 py-1 rounded-full">
@@ -67,11 +68,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Core Add to Cart Interactive Actions */}
             <div className="pt-6 mt-6 border-t border-slate-100">
-              <button className="w-full sm:w-auto bg-teal-900 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:bg-teal-950 active:scale-95 transition-all cursor-pointer">
-                Add to Shopping Bag
-              </button>
+              <AddToCartButton product={product} />
             </div>
           </div>
 
